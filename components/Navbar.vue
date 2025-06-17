@@ -1,0 +1,76 @@
+<template>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+    <NuxtLink to="/" class="navbar-brand">Trang chủ</NuxtLink>
+
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <!-- Admin -->
+      <template v-if="role === 'admin'">
+        <li class="nav-item">
+          <NuxtLink to="/admin/dashboard" class="nav-link">Admin Dashboard</NuxtLink>
+        </li>
+        <li class="nav-item">
+          <NuxtLink to="/admin/users" class="nav-link">Quản lý người dùng</NuxtLink>
+        </li>
+      </template>
+
+      <!-- Sale -->
+      <template v-if="role === 'sale'">
+        <li class="nav-item">
+          <NuxtLink to="/seller/products" class="nav-link">Sản phẩm</NuxtLink>
+        </li>
+        <li class="nav-item">
+          <NuxtLink to="/seller/orders" class="nav-link">Đơn hàng</NuxtLink>
+        </li>
+      </template>
+
+      <!-- Manager -->
+      <template v-if="role === 'manager'">
+        <li class="nav-item">
+          <NuxtLink to="/shop/manage" class="nav-link">Quản lý cửa hàng</NuxtLink>
+        </li>
+      </template>
+
+      <!-- User -->
+      <template v-if="role === 'user'">
+        <li class="nav-item">
+          <NuxtLink to="/shop" class="nav-link">Xem cửa hàng</NuxtLink>
+        </li>
+        <li class="nav-item">
+          <NuxtLink to="/cart" class="nav-link">Giỏ hàng</NuxtLink>
+        </li>
+      </template>
+
+      <!-- Khách chưa đăng nhập -->
+      <template v-if="!isAuthenticated">
+        <li class="nav-item">
+          <NuxtLink to="/login" class="nav-link">Đăng nhập</NuxtLink>
+        </li>
+        <li class="nav-item">
+          <NuxtLink to="/register" class="nav-link">Đăng ký</NuxtLink>
+        </li>
+      </template>
+    </ul>
+
+    <div v-if="isAuthenticated">
+      <button @click="handleLogout" class="btn btn-outline-danger btn-sm">Đăng xuất</button>
+    </div>
+  </nav>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, computed } from 'vue'
+const { logout } = useAuth()
+
+const role = ref<string>('')
+const isAuthenticated = computed(() => !!role.value)
+
+onMounted(() => {
+  role.value = localStorage.getItem('role') || ''
+})
+
+const handleLogout = async () => {
+  await logout()
+  localStorage.removeItem('role')
+  location.reload() // hoặc navigateTo('/login')
+}
+</script>

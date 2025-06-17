@@ -3,7 +3,7 @@ export const useAuth = () => {
   const login = async (email: string, password: string) => {
     try {
       const { $api } = useNuxtApp();
-      const response = await $api.post("/api/Auth/Login", {
+      const response = await $api.post("/Auth/Login", {
         email,
         password,
       });
