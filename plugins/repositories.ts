@@ -1,4 +1,6 @@
 import { weatherRepository } from "~/repositories/weather";
+import { shopRepository } from "~/repositories/shop";
+
 
 export default defineNuxtPlugin({
     setup(nuxtApp) {
@@ -6,6 +8,7 @@ export default defineNuxtPlugin({
 
         const repositories = {
             weatherRepository: weatherRepository($api),
+            shopRepository: shopRepository($api),
         };
 
         return {
