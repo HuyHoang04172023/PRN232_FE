@@ -8,5 +8,8 @@ export const shopRepository = ($api: any) => {
         async getShopsByStatusName(statusName: string): Promise<any[]> {
             return $api.get(`${path}/status/${statusName}`).then((response: any) => response.data);
         },
+        async createShop(data: any): Promise<any> {
+            return $api.post(`${path}`, data)
+        },
     };
 };

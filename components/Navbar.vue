@@ -33,7 +33,7 @@
       <!-- User -->
       <template v-if="role === 'user'">
         <li class="nav-item">
-          <NuxtLink to="/shop" class="nav-link">Xem cửa hàng</NuxtLink>
+          <NuxtLink to="/user/CreateShop" class="nav-link">Yêu cầu mở cửa hàng</NuxtLink>
         </li>
         <li class="nav-item">
           <NuxtLink to="/cart" class="nav-link">Giỏ hàng</NuxtLink>
