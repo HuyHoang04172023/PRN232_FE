@@ -5,5 +5,8 @@ export const shopRepository = ($api: any) => {
         async fetchShops(): Promise<any[]> {
             return $api.get(`${path}`).then((response: any) => response.data);
         },
+        async getShopsByStatusName(statusName: string): Promise<any[]> {
+            return $api.get(`${path}/status/${statusName}`).then((response: any) => response.data);
+        },
     };
 };

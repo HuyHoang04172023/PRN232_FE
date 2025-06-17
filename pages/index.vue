@@ -34,7 +34,7 @@ const shops = ref<any[]>([]);
 const groupedShops = ref<any[][]>([]);
 
 onMounted(async () => {
-  shops.value = await $repositories.shopRepository.fetchShops();
+  shops.value = await $repositories.shopRepository.getShopsByStatusName("active");
   $toast.success('Lấy danh sách cửa hàng thành công!');
   groupedShops.value = chunkArray(shops.value, 3);
 });
