@@ -11,5 +11,14 @@ export const shopRepository = ($api: any) => {
         async createShop(data: any): Promise<any> {
             return $api.post(`${path}`, data)
         },
+        async getShopByUserId(userId: number): Promise<any> {
+            return $api.get(`${path}/${userId}`).then((response: any) => response.data)
+        },
+        async updateShopByShopId(shopId: number, data: any): Promise<any> {
+            return $api.put(`${path}/${shopId}`, data).then((response: any) => response.data);
+        },
+        async deleteShopByShopId(shopId: number): Promise<any> {
+            return $api.delete(`${path}/${shopId}`).then((response: any) => response.data)
+        },
     };
 };
