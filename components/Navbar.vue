@@ -26,7 +26,7 @@
       <!-- Manager -->
       <template v-if="role === 'manager'">
         <li class="nav-item">
-          <NuxtLink to="/shop/manage" class="nav-link">Quản lý cửa hàng</NuxtLink>
+          <NuxtLink to="/manager/ApproveShop" class="nav-link">Duyệt cửa hàng</NuxtLink>
         </li>
       </template>
 

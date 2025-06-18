@@ -20,5 +20,9 @@ export const shopRepository = ($api: any) => {
         async deleteShopByShopId(shopId: number): Promise<any> {
             return $api.delete(`${path}/${shopId}`).then((response: any) => response.data)
         },
+        async updateStatusShopByShopId(shopId: number, statusName: string): Promise<any> {
+            return $api.post(`/Shops/update-status/${shopId}?statusName=${statusName}`)
+                .then((response: any) => response.data)
+        }
     };
 };

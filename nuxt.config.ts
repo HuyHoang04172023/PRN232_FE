@@ -4,7 +4,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: [
     'bootstrap/dist/css/bootstrap.css',
-    'bootstrap-vue-next/dist/bootstrap-vue-next.css'
+    'bootstrap-vue-next/dist/bootstrap-vue-next.css',
+    'bootstrap/dist/css/bootstrap.min.css',
+    'bootstrap-icons/font/bootstrap-icons.css'
   ],
   plugins: [
     { src: "@/plugins/vue3-toastify.client.ts"},
