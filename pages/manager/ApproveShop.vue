@@ -16,7 +16,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="shop in shops" :key="shop.shopId">
+        <tr v-if="shops.length === 0">
+          <td colspan="8" class="text-center text-muted">Không có cửa hàng nào đang chờ duyệt.</td>
+        </tr>
+        <tr v-else v-for="shop in shops" :key="shop.shopId">
           <td>{{ shop.shopId }}</td>
           <td>{{ shop.shopName }}</td>
           <td>{{ shop.shopAddress }}</td>

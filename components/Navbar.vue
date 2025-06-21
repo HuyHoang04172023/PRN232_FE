@@ -16,7 +16,7 @@
       <!-- Sale -->
       <template v-if="role === 'sale'">
         <li class="nav-item">
-          <NuxtLink to="/seller/products" class="nav-link">Sản phẩm</NuxtLink>
+          <NuxtLink to="/sale/products" class="nav-link">Danh sách sản phẩm</NuxtLink>
         </li>
         <li class="nav-item">
           <NuxtLink to="/seller/orders" class="nav-link">Đơn hàng</NuxtLink>
