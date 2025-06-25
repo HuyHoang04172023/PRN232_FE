@@ -114,10 +114,10 @@ const handleSubmit = async () => {
 
     await $repositories.productRepository.createProduct(product.value)
     $toast.success('Tạo sản phẩm thành công!')
-    navigateTo('/product')
+    navigateTo('/sale/products')
   } catch (err) {
-    $toast.error('Tạo sản phẩm thất bại!')
-
+    const message = err?.response?.data?.message || 'Đã xảy ra lỗi không xác định'
+    $toast.error(message)
     if (imageUrl) {
       try {
         await $fetch('/api/image', {

@@ -30,6 +30,12 @@
             </div>
         </div>
 
+        <div class="text-center mb-5">
+            <a href="/sale/products/create" class="btn btn-primary">
+                + Tạo sản phẩm
+            </a>
+        </div>
+
         <!-- Danh sách sản phẩm Active -->
         <h4 class="mb-3">Sản phẩm đang hoạt động</h4>
         <div class="row">
