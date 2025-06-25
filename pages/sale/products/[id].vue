@@ -1,6 +1,11 @@
 <template>
     <div class="container py-4" v-if="productData">
-        <h2 class="mb-3">Chỉnh sửa sản phẩm</h2>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">Chỉnh sửa sản phẩm</h2>
+            <button class="btn btn-outline-danger" @click="deleteProduct">
+                Xoá sản phẩm
+            </button>
+        </div>
 
         <div class="mb-4">
             <label class="form-label">Tên sản phẩm</label>
@@ -150,6 +155,17 @@ const removeProductVariant = (index: number) => {
     }
 }
 
+const deleteProduct = async () => {
+    if (!confirm('Bạn có chắc chắn muốn xoá sản phẩm này?')) return;
+
+    try {
+        await $repositories.productRepository.deleteProductByProductId(productId)
+        $toast.success("Đã xoá sản phẩm thành công!")
+        navigateTo('/sale/products')
+    } catch (err) {
+        $toast.error("Xoá sản phẩm thất bại!")
+    }
+}
 onMounted(fetchProduct)
 </script>
 
