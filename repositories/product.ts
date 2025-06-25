@@ -17,5 +17,9 @@ export const productRepository = ($api: any) => {
         async deleteProductByProductId(productId: number): Promise<any> {
             return $api.delete(`${path}/${productId}`).then((response: any) => response.data)
         },
+        async updateStatusProductByProductId(productId: number, statusName: string): Promise<any> {
+            return $api.post(`${path}/update-status/${productId}?statusName=${statusName}`)
+                .then((response: any) => response.data)
+        },
     };
 };
