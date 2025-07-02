@@ -122,7 +122,7 @@ const productPending = ref<any[]>([]);
 const productSoldout = ref<any[]>([]);
 const productReject = ref<any[]>([]);
 
-const fetchShops = async () => {
+const fetchProducts = async () => {
     try {
         productActive.value = await $repositories.productRepository.getProductsByStatusName("active");
         productPending.value = await $repositories.productRepository.getProductsByStatusName("pending");
@@ -137,7 +137,7 @@ const goToProductDetail = (productId: number) => {
     router.push(`/sale/products/${productId}`);
 }
 
-onMounted(fetchShops)
+onMounted(fetchProducts)
 
 </script>
 <style scoped>
