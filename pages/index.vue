@@ -4,7 +4,8 @@
 
     <div v-for="(row, rowIndex) in groupedShops" :key="rowIndex" class="row mb-4">
       <div v-for="shop in row" :key="shop.shopId" class="col-12 col-md-4 mb-3">
-        <div class="shop-card d-flex border rounded shadow-sm h-100 overflow-hidden">
+        <div class="shop-card d-flex border rounded shadow-sm h-100 overflow-hidden"
+          @click="() => goToShopDetail(shop.shopId)" style="cursor: pointer;">
           <img :src="shop.shopImage" alt="Shop Image" class="shop-image" />
 
           <div class="p-3 flex-grow-1 d-flex flex-column justify-content-between">
@@ -30,14 +31,14 @@
 
 <script setup lang="ts">
 const { $toast, $repositories }: any = useNuxtApp();
+const router = useRouter();
+
 const shops = ref<any[]>([]);
 const groupedShops = ref<any[][]>([]);
 
-onMounted(async () => {
-  shops.value = await $repositories.shopRepository.getShopsByStatusName("active");
-  $toast.success('Lấy danh sách cửa hàng thành công!');
-  groupedShops.value = chunkArray(shops.value, 3);
-});
+const goToShopDetail = (shopId: string) => {
+  router.push(`/shop/${shopId}`);
+};
 
 // Chia danh sách thành từng nhóm 3 phần tử
 function chunkArray(arr: any[], chunkSize: number) {
@@ -65,6 +66,12 @@ const formatDate = (dateStr: string) => {
   const date = new Date(dateStr);
   return date.toLocaleDateString('vi-VN');
 };
+
+onMounted(async () => {
+  shops.value = await $repositories.shopRepository.getShopsByStatusName("active");
+  $toast.success('Lấy danh sách cửa hàng thành công!');
+  groupedShops.value = chunkArray(shops.value, 3);
+});
 </script>
 
 <style scoped>

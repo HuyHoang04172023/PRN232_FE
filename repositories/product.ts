@@ -21,5 +21,8 @@ export const productRepository = ($api: any) => {
             return $api.post(`${path}/update-status/${productId}?statusName=${statusName}`)
                 .then((response: any) => response.data)
         },
+        async getProductsByShopId(shopId: number): Promise<any[]> {
+            return $api.get(`${path}/shop/${shopId}`).then((response: any) => response.data);
+        },
     };
 };
