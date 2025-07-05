@@ -2,31 +2,38 @@
     <div class="container mt-5">
         <h3>🛒 Giỏ hàng của bạn</h3>
 
-        <div v-if="cart?.cartItems?.length" class="row">
-            <div v-for="item in cart.cartItems" :key="item.cartItemId"
-                class="col-md-12 mb-3 border rounded p-3 d-flex align-items-center">
-                <input type="checkbox" v-model="selectedItems" :value="item.cartItemId" class="form-check-input me-3" />
+        <div v-if="groupedCartItems.length">
+            <div v-for="(group, index) in groupedCartItems" :key="index" class="mb-4 border rounded p-3">
+                <h5>🛍️ {{ group.shopName }}</h5>
+                <div v-for="item in group.items" :key="item.cartItemId"
+                    class="row align-items-center border-bottom py-2">
+                    <div class="col-auto">
+                        <input type="checkbox" v-model="selectedItems" :value="item.cartItemId"
+                            class="form-check-input" />
+                    </div>
 
-                <img :src="item.productVariant.product.productImage" alt="Product Image" class="img-thumbnail me-3"
-                    style="width: 80px; height: 80px; object-fit: cover;" />
+                    <div class="col-auto">
+                        <img :src="item.productVariant.product.productImage" alt="Product Image" class="img-thumbnail"
+                            style="width: 80px; height: 80px; object-fit: cover;" />
+                    </div>
 
-                <div class="flex-grow-1">
-                    <h5 class="mb-1">{{ item.productVariant.product.productName }}</h5>
-                    <p class="mb-1 text-muted">
-                        Size: {{ item.productVariant.productSize.productSizeName }}
-                    </p>
-                    <p class="mb-1 text-success fw-bold">
-                        {{ formatPrice(item.productVariant.productVariantPrice) }}
-                    </p>
+                    <div class="col">
+                        <h5 class="mb-1">{{ item.productVariant.product.productName }}</h5>
+                        <p class="mb-1 text-muted">Size: {{ item.productVariant.productSize.productSizeName }}</p>
+                        <p class="mb-1 text-success fw-bold">{{ formatPrice(item.productVariant.productVariantPrice) }}
+                        </p>
+                    </div>
+
+                    <div class="col-auto d-flex align-items-center">
+                        <button class="btn btn-outline-secondary btn-sm" @click="changeQuantity(item, -1)">−</button>
+                        <span class="mx-2">{{ item.quantity }}</span>
+                        <button class="btn btn-outline-secondary btn-sm" @click="changeQuantity(item, 1)">+</button>
+                    </div>
+
+                    <div class="col-auto">
+                        <button class="btn btn-danger btn-sm" @click="removeItem(item)">Xóa</button>
+                    </div>
                 </div>
-
-                <div class="d-flex align-items-center me-3">
-                    <button class="btn btn-outline-secondary btn-sm" @click="changeQuantity(item, -1)">−</button>
-                    <span class="mx-2">{{ item.quantity }}</span>
-                    <button class="btn btn-outline-secondary btn-sm" @click="changeQuantity(item, 1)">+</button>
-                </div>
-
-                <button class="btn btn-danger btn-sm" @click="removeItem(item)">Xóa</button>
             </div>
         </div>
 
@@ -34,21 +41,24 @@
 
         <div v-if="cart?.cartItems?.length" class="mt-4 text-end">
             <button class="btn btn-success" @click="createOrder">
-                🧾 Tạo đơn hàng (console)
+                🧾 Tạo đơn hàng
             </button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useNuxtApp } from 'nuxt/app'
-import { ref, onMounted } from 'vue'
+import { useNuxtApp, useRouter } from 'nuxt/app'
+import { ref, onMounted, computed } from 'vue'
+import { useState } from '#app'
 
 const { $repositories, $toast }: any = useNuxtApp()
+const router = useRouter()
 
 const userId = ref<string | null>(null)
 const cart = ref<any>(null)
 const selectedItems = ref<number[]>([])
+const orderState = useState<any>('order-cart', () => ({ items: [], userId: '' }))
 
 const fetchCart = async () => {
     if (!userId.value) return
@@ -91,7 +101,6 @@ const removeItem = async (item: any) => {
     }
 }
 
-
 const createOrder = () => {
     const selectedProducts = cart.value.cartItems.filter((item: any) =>
         selectedItems.value.includes(item.cartItemId)
@@ -102,13 +111,34 @@ const createOrder = () => {
         return
     }
 
-    console.log('🧾 Dữ liệu tạo đơn hàng:')
-    console.log(
-        selectedProducts.map((item: any) => ({
-            productVariantId: item.productVariantId,
-            quantity: item.quantity
-        }))
-    )
+    orderState.value = {
+        items: selectedProducts,
+        userId: userId.value
+    }
+
+    router.push('/user/order/confirm')
+}
+
+const groupedCartItems = computed(() => {
+    if (!cart.value || !cart.value.cartItems) return []
+
+    const groups = new Map()
+    for (const item of cart.value.cartItems) {
+        const shopId = item.productVariant.product.shopId
+        if (!groups.has(shopId)) {
+            groups.set(shopId, {
+                shopId,
+                shopName: item.productVariant.product.shopName,
+                items: []
+            })
+        }
+        groups.get(shopId).items.push(item)
+    }
+    return Array.from(groups.values())
+})
+
+const formatPrice = (price: number): string => {
+    return price.toLocaleString('vi-VN') + '₫'
 }
 
 onMounted(() => {
@@ -117,9 +147,4 @@ onMounted(() => {
         fetchCart()
     }
 })
-
-// Format tiền
-const formatPrice = (price: number): string => {
-    return price.toLocaleString('vi-VN') + '₫'
-}
 </script>

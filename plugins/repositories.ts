@@ -3,6 +3,7 @@ import { shopRepository } from "~/repositories/shop";
 import { productRepository } from "~/repositories/product";
 import { configDataRepository } from "~/repositories/config-data";
 import { cartRepository } from "~/repositories/cart";
+import { orderRepository } from "~/repositories/order";
 
 export default defineNuxtPlugin({
     setup(nuxtApp) {
@@ -14,6 +15,7 @@ export default defineNuxtPlugin({
             productRepository: productRepository($api),
             configDataRepository: configDataRepository($api),
             cartRepository: cartRepository($api),
+            orderRepository: orderRepository($api),
         };
 
         return {
