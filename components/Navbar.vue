@@ -39,7 +39,7 @@
           <NuxtLink to="/user/shop/create" class="nav-link">Yêu cầu mở cửa hàng</NuxtLink>
         </li>
         <li class="nav-item">
-          <NuxtLink to="/cart" class="nav-link">Giỏ hàng</NuxtLink>
+          <NuxtLink to="/user/cart" class="nav-link">Giỏ hàng</NuxtLink>
         </li>
       </template>
 
