@@ -1,17 +1,14 @@
 <template>
     <div class="container mt-5" v-if="product">
         <div class="row">
-            <!-- Hình ảnh sản phẩm -->
             <div class="col-md-5">
-                <img :src="getImageUrl(product.productImage)" alt="Product Image" class="img-fluid rounded" />
+                <img :src="product.productImage" alt="Product Image" class="img-fluid rounded" />
             </div>
 
-            <!-- Thông tin sản phẩm -->
             <div class="col-md-7">
                 <h2>{{ product.productName }}</h2>
                 <p class="text-muted">{{ product.productDescription }}</p>
 
-                <!-- Biến thể -->
                 <div class="mb-3">
                     <label class="form-label">Chọn kích cỡ / biến thể:</label>
                     <select class="form-select" v-model="selectedVariantId" @change="updateSelectedVariant">
@@ -23,7 +20,11 @@
                     </select>
                 </div>
 
-                <!-- Giá -->
+                <div class="mb-3">
+                    <label class="form-label">Số lượng:</label>
+                    <input type="number" v-model.number="quantity" class="form-control" min="1" />
+                </div>
+
                 <div class="mb-3">
                     <strong>Giá:</strong>
                     <span class="fs-5 text-success">
@@ -31,7 +32,6 @@
                     </span>
                 </div>
 
-                <!-- Nút thêm vào giỏ hàng -->
                 <button class="btn btn-primary" @click="addToCart">
                     Thêm vào giỏ hàng
                 </button>
@@ -39,7 +39,6 @@
         </div>
     </div>
 
-    <!-- Loading -->
     <div v-else class="text-center mt-5">
         <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Đang tải...</span>
@@ -52,19 +51,19 @@ import { useNuxtApp } from 'nuxt/app';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
-const { $repositories }: any = useNuxtApp();
+const { $repositories, $toast }: any = useNuxtApp();
 const route = useRoute();
 const productId = Number(route.params.id);
+const userId = ref<string | null>(null);
 
 const product = ref<any>(null);
 const productSizes = ref<any[]>([]);
 const selectedVariantId = ref<number | null>(null);
 const currentPrice = ref<number>(0);
+const quantity = ref<number>(1);
 
-// Fetch product + size data
 const fetchProductAndSizes = async () => {
     try {
-        // Gọi đồng thời 2 API
         const [productData, sizeData] = await Promise.all([
             $repositories.productRepository.getProductByProductId(productId),
             $repositories.configDataRepository.fetchProductSizes(),
@@ -78,11 +77,9 @@ const fetchProductAndSizes = async () => {
             updateSelectedVariant();
         }
     } catch (err) {
-        console.error('Lỗi khi tải dữ liệu:', err);
     }
 };
 
-// Cập nhật giá theo biến thể được chọn
 const updateSelectedVariant = () => {
     const variant = product.value.productVariants.find(
         (v: any) => v.productVariantId === selectedVariantId.value
@@ -92,34 +89,38 @@ const updateSelectedVariant = () => {
     }
 };
 
-// Hiển thị tên size theo ID
 const getSizeName = (sizeId: number): string => {
     const size = productSizes.value.find((s: any) => s.productSizeId === sizeId);
     return size ? size.productSizeName : `Size ${sizeId}`;
 };
 
-// Hàm xử lý khi thêm vào giỏ hàng
-const addToCart = () => {
-    const selectedVariant = product.value.productVariants.find(
-        (v: any) => v.productVariantId === selectedVariantId.value
-    );
-    console.log('Thêm vào giỏ hàng:', {
-        productId: product.value.productId,
-        productName: product.value.productName,
-        selectedVariant,
-    });
+const addToCart = async () => {
+    if (!selectedVariantId.value || quantity.value < 1) {
+        $toast.error('Vui lòng chọn biến thể và nhập số lượng hợp lệ!');
+        return;
+    }
+
+    const data = {
+        productVariantId: selectedVariantId.value,
+        quantity: quantity.value
+    };
+
+    try {
+        await $repositories.cartRepository.addProductToCart(userId.value, data);
+        $toast.success('Đã thêm vào giỏ hàng!');
+    } catch (err) {
+        $toast.error('Thêm vào giỏ hàng thất bại!');
+    }
 };
 
-// Định dạng giá tiền
 const formatPrice = (price: number): string => {
     return price.toLocaleString('vi-VN') + '₫';
 };
 
-// Xử lý ảnh nếu là đường dẫn tương đối
-const getImageUrl = (path: string): string => {
-    const baseUrl = 'https://your-api-domain.com'; // Thay bằng domain thực tế của bạn
-    return path.startsWith('/') ? baseUrl + path : path;
-};
-
-onMounted(fetchProductAndSizes);
+onMounted(() => {
+    if (process.client) {
+        userId.value = localStorage.getItem('accountId');
+        fetchProductAndSizes();
+    }
+});
 </script>

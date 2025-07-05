@@ -2,6 +2,7 @@ import { weatherRepository } from "~/repositories/weather";
 import { shopRepository } from "~/repositories/shop";
 import { productRepository } from "~/repositories/product";
 import { configDataRepository } from "~/repositories/config-data";
+import { cartRepository } from "~/repositories/cart";
 
 export default defineNuxtPlugin({
     setup(nuxtApp) {
@@ -12,6 +13,7 @@ export default defineNuxtPlugin({
             shopRepository: shopRepository($api),
             productRepository: productRepository($api),
             configDataRepository: configDataRepository($api),
+            cartRepository: cartRepository($api),
         };
 
         return {
