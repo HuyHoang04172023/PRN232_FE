@@ -77,7 +77,7 @@ const cancelOrder = async () => {
         const confirmed = confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')
         if (!confirmed) return
 
-        await $repositories.orderRepository.cancelOrder(orderId)
+        await $repositories.orderRepository.updateStatusOrderByOrderId(orderId, 'cancel')
         $toast.success('Đã hủy đơn hàng thành công.')
         fetchOrder()
     } catch (err) {
