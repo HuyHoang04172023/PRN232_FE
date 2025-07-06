@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { useState, useRouter, useNuxtApp } from '#app'
+import { useState, useRouter, useNuxtApp } from 'nuxt/app'
 import { ref, computed } from 'vue'
 
 const { $repositories, $toast }: any = useNuxtApp()

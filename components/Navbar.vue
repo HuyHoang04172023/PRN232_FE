@@ -41,6 +41,9 @@
         <li class="nav-item">
           <NuxtLink to="/user/cart" class="nav-link">Giỏ hàng</NuxtLink>
         </li>
+        <li class="nav-item">
+          <NuxtLink to="/user/order/history" class="nav-link">Lịch sử đơn hàng</NuxtLink>
+        </li>
       </template>
 
       <!-- Khách chưa đăng nhập -->
