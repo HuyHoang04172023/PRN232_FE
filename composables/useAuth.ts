@@ -8,11 +8,17 @@ export const useAuth = () => {
         password,
       });
 
-      const { token, role, accountId } = response.data;
+      const { token, role, accountId, shopId } = response.data;
 
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
       localStorage.setItem("accountId", accountId);
+
+      if (role.toLowerCase() === "sale" && shopId !== null && shopId !== undefined) {
+        localStorage.setItem("shopId", shopId.toString());
+      } else {
+        localStorage.removeItem("shopId");
+      }
 
       return true;
     } catch (err) {
@@ -25,6 +31,7 @@ export const useAuth = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("accountId");
+    localStorage.removeItem("shopId");
     navigateTo("/login");
   };
 

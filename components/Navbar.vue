@@ -19,7 +19,7 @@
           <NuxtLink to="/sale/products" class="nav-link">Danh sách sản phẩm</NuxtLink>
         </li>
         <li class="nav-item">
-          <NuxtLink to="/seller/orders" class="nav-link">Đơn hàng</NuxtLink>
+          <NuxtLink to="/sale/order" class="nav-link">Đơn hàng</NuxtLink>
         </li>
       </template>
 

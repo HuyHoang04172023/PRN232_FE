@@ -8,6 +8,9 @@ export const orderRepository = ($api: any) => {
         async getOrdersByUserId(userId: number): Promise<any> {
             return $api.get(`${path}/user/${userId}`).then((response: any) => response.data)
         },
+        async getOrdersByShopId(shopId: number): Promise<any> {
+            return $api.get(`${path}/shop/${shopId}`).then((response: any) => response.data)
+        },
         async getOrderByOrderId(orderId: number): Promise<any> {
             return $api.get(`${path}/${orderId}`).then((response: any) => response.data)
         },
