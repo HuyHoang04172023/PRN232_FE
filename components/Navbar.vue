@@ -21,6 +21,9 @@
         <li class="nav-item">
           <NuxtLink to="/sale/order" class="nav-link">Đơn hàng</NuxtLink>
         </li>
+        <li class="nav-item">
+          <NuxtLink to="/sale/statistic" class="nav-link">Thống kê</NuxtLink>
+        </li>
       </template>
 
       <!-- Manager -->
