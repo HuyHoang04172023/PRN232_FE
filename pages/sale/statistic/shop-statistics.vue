@@ -4,7 +4,7 @@
       <div class="col-12 col-md-6 mb-4">
         <RevenueBarChart />
       </div>
-      <div class="col-12 col-md-6 mb-4">
+      <div class="col-12 col-md-12 mb-4">
         <DailyRevenueLine />
       </div>
       <div class="col-12 col-md-6 mb-4">

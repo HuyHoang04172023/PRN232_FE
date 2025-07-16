@@ -23,22 +23,22 @@ const router = useRouter()
 
 const statisticCards = [
   {
-    title: 'Doanh thu theo cửa hàng',
+    title: 'Thống kê doanh thu',
     description: 'Xem biểu đồ doanh thu của từng cửa hàng.',
     icon: '🏪',
     route: '/sale/statistic/shop-statistics'
+  },
+  {
+    title: 'Thống kê sản phẩm',
+    description: 'Xem các sản phẩm bán chạy hoặc được yêu thích nhất.',
+    icon: '⭐',
+    route: '/sale/statistic/product-statistics'
   },
   {
     title: 'Trạng thái đơn hàng',
     description: 'Phân tích số lượng đơn hàng theo trạng thái.',
     icon: '📦',
     route: '/sale/statistic/order-status'
-  },
-  {
-    title: 'Sản phẩm nổi bật',
-    description: 'Xem các sản phẩm bán chạy hoặc được yêu thích nhất.',
-    icon: '⭐',
-    route: '/sale/statistic/top-products'
   },
   {
     title: 'Doanh thu theo ngày',
