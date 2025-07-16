@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2 class="font-bold mb-4">📈 Doanh thu theo ngày</h2>
+    <h2 class="font-bold mb-4">
+      📈 Doanh thu theo ngày ({{ selectedMonth }}/{{ selectedYear }})
+    </h2>
 
     <div class="d-flex align-items-center gap-3 mb-4">
       <select v-model="selectedMonth" class="form-select w-auto">
@@ -10,8 +12,6 @@
       <select v-model="selectedYear" class="form-select w-auto">
         <option v-for="y in [2023, 2024, 2025]" :key="y" :value="y">Năm {{ y }}</option>
       </select>
-
-      <button class="btn btn-primary" @click="loadChart">Xem thống kê</button>
     </div>
 
     <canvas ref="canvas" />
@@ -19,11 +19,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables)
 
 const { $toast, $repositories }: any = useNuxtApp()
+
 const canvas = ref()
 let chartInstance: Chart | null = null
 
@@ -77,6 +78,10 @@ const loadChart = async () => {
 }
 
 onMounted(() => {
+  loadChart()
+})
+
+watch([selectedMonth, selectedYear], () => {
   loadChart()
 })
 </script>

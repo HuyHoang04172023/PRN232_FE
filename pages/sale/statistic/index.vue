@@ -38,19 +38,7 @@ const statisticCards = [
     title: 'Trạng thái đơn hàng',
     description: 'Phân tích số lượng đơn hàng theo trạng thái.',
     icon: '📦',
-    route: '/sale/statistic/order-status'
-  },
-  {
-    title: 'Doanh thu theo ngày',
-    description: 'Thống kê doanh thu từng ngày trong tháng.',
-    icon: '📅',
-    route: '/sale/statistic/daily-revenue'
-  },
-  {
-    title: 'Lượt thích sản phẩm',
-    description: 'Phân tích sản phẩm theo số lượt thích.',
-    icon: '❤️',
-    route: '/sale/statistic/product-likes'
+    route: '/sale/statistic/order-statistics'
   }
 ]
 
