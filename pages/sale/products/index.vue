@@ -1,48 +1,33 @@
 <template>
-    <div class="container py-4">
+    <div class="container py-5">
         <h2 class="text-center mb-4">Thống kê sản phẩm</h2>
 
-        <!-- Tổng số sản phẩm -->
         <div class="row text-center mb-5">
-            <div class="col-md-3 col-6 mb-3">
+            <div class="col-md-3 col-6 mb-3" v-for="stat in stats" :key="stat.label">
                 <div class="p-3 border rounded bg-light shadow-sm">
-                    <h5 class="mb-1">Active</h5>
-                    <p class="mb-0">{{ productActive.length || 0 }} sản phẩm</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6 mb-3">
-                <div class="p-3 border rounded bg-light shadow-sm">
-                    <h5 class="mb-1">Pending</h5>
-                    <p class="mb-0">{{ productPending.length || 0 }} sản phẩm</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6 mb-3">
-                <div class="p-3 border rounded bg-light shadow-sm">
-                    <h5 class="mb-1">Soldout</h5>
-                    <p class="mb-0">{{ productSoldout.length || 0 }} sản phẩm</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6 mb-3">
-                <div class="p-3 border rounded bg-light shadow-sm">
-                    <h5 class="mb-1">Reject</h5>
-                    <p class="mb-0">{{ productReject.length || 0 }} sản phẩm</p>
+                    <h5 class="mb-1">{{ stat.label }}</h5>
+                    <p class="mb-0">{{ stat.count }} sản phẩm</p>
                 </div>
             </div>
         </div>
 
-        <div class="text-center mb-5">
-            <a href="/sale/products/create" class="btn btn-primary">
-                + Tạo sản phẩm
-            </a>
+        <div class="text-center mb-4">
+            <a href="/sale/products/create" class="btn btn-primary">+ Tạo sản phẩm</a>
         </div>
 
-        <!-- Danh sách sản phẩm Active -->
-        <h4 class="mb-3">Sản phẩm đang hoạt động</h4>
+        <ul class="nav nav-pills justify-content-center mb-4 gap-2">
+            <li class="nav-item" v-for="tab in tabs" :key="tab.key">
+                <button class="nav-link" :class="{ active: currentTab === tab.key }" @click="currentTab = tab.key">
+                    {{ tab.label }}
+                </button>
+            </li>
+        </ul>
+
         <div class="row">
-            <template v-if="productActive.length > 0">
-                <div class="col-md-4 mb-4" v-for="product in productActive" :key="product.productId">
+            <template v-if="filteredProducts.length > 0">
+                <div class="col-md-4 mb-4" v-for="product in filteredProducts" :key="product.productId">
                     <div class="card h-100 shadow-sm" @click="goToProductDetail(product.productId)"
-                        style="cursor: pointer;">
+                        style="cursor: pointer">
                         <img :src="product.productImage" class="card-img-top" alt="..." />
                         <div class="card-body">
                             <h5 class="card-title">{{ product.productName }}</h5>
@@ -51,94 +36,63 @@
                     </div>
                 </div>
             </template>
-            <p v-else class="text-muted">Không có sản phẩm.</p>
-        </div>
-
-        <!-- Danh sách sản phẩm Pending -->
-        <h4 class="mt-5 mb-3">Sản phẩm chờ duyệt</h4>
-        <div class="row">
-            <template v-if="productPending.length > 0">
-                <div class="col-md-4 mb-4" v-for="product in productPending" :key="product.productId">
-                    <div class="card h-100 shadow-sm" @click="goToProductDetail(product.productId)"
-                        style="cursor: pointer;">
-                        <img :src="product.productImage" class="card-img-top" alt="..." />
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.productName }}</h5>
-                            <p class="card-text">{{ product.productDescription }}</p>
-                        </div>
-                    </div>
-                </div>
-            </template>
-            <p v-else class="text-muted">Không có sản phẩm.</p>
-        </div>
-
-        <!-- Danh sách sản phẩm Soldout -->
-        <h4 class="mt-5 mb-3">Sản phẩm hết hàng</h4>
-        <div class="row">
-            <template v-if="productSoldout.length > 0">
-                <div class="col-md-4 mb-4" v-for="product in productSoldout" :key="product.productId">
-                    <div class="card h-100 shadow-sm" @click="goToProductDetail(product.productId)"
-                        style="cursor: pointer;">
-                        <img :src="product.productImage" class="card-img-top" alt="..." />
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.productName }}</h5>
-                            <p class="card-text">{{ product.productDescription }}</p>
-                        </div>
-                    </div>
-                </div>
-            </template>
-            <p v-else class="text-muted">Không có sản phẩm.</p>
-        </div>
-
-        <!-- Danh sách sản phẩm Reject -->
-        <h4 class="mt-5 mb-3">Sản phẩm bị từ chối</h4>
-        <div class="row">
-            <template v-if="productReject.length > 0">
-                <div class="col-md-4 mb-4" v-for="product in productReject" :key="product.productId">
-                    <div class="card h-100 shadow-sm" @click="goToProductDetail(product.productId)"
-                        style="cursor: pointer;">
-                        <img :src="product.productImage" class="card-img-top" alt="..." />
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.productName }}</h5>
-                            <p class="card-text">{{ product.productDescription }}</p>
-                        </div>
-                    </div>
-                </div>
-            </template>
-            <p v-else class="text-muted">Không có sản phẩm.</p>
+            <p v-else class="text-center text-muted">Không có sản phẩm.</p>
         </div>
     </div>
 </template>
-
-
 <script setup lang="ts">
-import { useNuxtApp, useRouter } from 'nuxt/app';
-import { ref, onMounted } from 'vue'
-const { $toast, $repositories }: any = useNuxtApp();
-const router = useRouter();
+import { ref, onMounted, computed } from 'vue'
+import { useNuxtApp, useRouter } from 'nuxt/app'
 
-const productActive = ref<any[]>([]);
-const productPending = ref<any[]>([]);
-const productSoldout = ref<any[]>([]);
-const productReject = ref<any[]>([]);
+const { $repositories }: any = useNuxtApp()
+const router = useRouter()
 
-const fetchProducts = async () => {
-    try {
-        productActive.value = await $repositories.productRepository.getProductsByStatusName("active");
-        productPending.value = await $repositories.productRepository.getProductsByStatusName("pending");
-        productSoldout.value = await $repositories.productRepository.getProductsByStatusName("soldout");
-        productReject.value = await $repositories.productRepository.getProductsByStatusName("reject");
-    } catch (err) {
+const productActive = ref<any[]>([])
+const productPending = ref<any[]>([])
+const productSoldout = ref<any[]>([])
+const productReject = ref<any[]>([])
+
+const currentTab = ref('active')
+
+const tabs = [
+    { key: 'active', label: 'Đang hoạt động' },
+    { key: 'pending', label: 'Chờ duyệt' },
+    { key: 'soldout', label: 'Hết hàng' },
+    { key: 'reject', label: 'Từ chối' }
+]
+
+const stats = computed(() => [
+    { label: 'Active', count: productActive.value.length || 0 },
+    { label: 'Pending', count: productPending.value.length || 0 },
+    { label: 'Soldout', count: productSoldout.value.length || 0 },
+    { label: 'Reject', count: productReject.value.length || 0 }
+])
+
+const filteredProducts = computed(() => {
+    switch (currentTab.value) {
+        case 'pending':
+            return productPending.value
+        case 'soldout':
+            return productSoldout.value
+        case 'reject':
+            return productReject.value
+        default:
+            return productActive.value
     }
-}
-
+})
 
 const goToProductDetail = (productId: number) => {
-    router.push(`/sale/products/${productId}`);
+    router.push(`/sale/products/${productId}`)
+}
+
+const fetchProducts = async () => {
+    productActive.value = await $repositories.productRepository.getProductsByStatusName("active")
+    productPending.value = await $repositories.productRepository.getProductsByStatusName("pending")
+    productSoldout.value = await $repositories.productRepository.getProductsByStatusName("soldout")
+    productReject.value = await $repositories.productRepository.getProductsByStatusName("reject")
 }
 
 onMounted(fetchProducts)
-
 </script>
 <style scoped>
 .card:hover {
