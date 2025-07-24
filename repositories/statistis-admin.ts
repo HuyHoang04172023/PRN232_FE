@@ -31,5 +31,18 @@ export const statisticalAdminRepository = ($api: any) => {
         async usersByRole(): Promise<any[]> {
             return $api.get(`${path}/user/users-by-role`).then((response: any) => response.data);
         },
+
+        async productsByStatus(): Promise<any[]> {
+            return $api.get(`${path}/product/products-by-status`).then((response: any) => response.data);
+        },
+        async topSellingProducts(): Promise<any[]> {
+            return $api.get(`${path}/product/top-selling-products`).then((response: any) => response.data);
+        },
+        async productsByShop2(): Promise<any[]> {
+            return $api.get(`${path}/product/products-by-shop`).then((response: any) => response.data);
+        },
+        async newProductsPerMonth(): Promise<any[]> {
+            return $api.get(`${path}/product/new-products-per-month`).then((response: any) => response.data);
+        },
     };
 };

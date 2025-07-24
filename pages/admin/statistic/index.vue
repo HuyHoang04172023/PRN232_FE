@@ -41,12 +41,12 @@ const statisticCards = [
     icon: '📊',
     route: '/admin/statistic/user-statistics'
   },
-  // {
-  //   title: 'Trạng thái đơn hàng',
-  //   description: 'Phân tích số lượng đơn hàng theo trạng thái.',
-  //   icon: '📦',
-  //   route: '/sale/statistic/order-statistics'
-  // }
+  {
+    title: 'Thống kê sản phẩm',
+    description: 'Xem các thông kê về sản phẩm trên website.',
+    icon: '📊',
+    route: '/admin/statistic/product-statistics'
+  },
 ]
 
 const navigateTo = (path) => {
