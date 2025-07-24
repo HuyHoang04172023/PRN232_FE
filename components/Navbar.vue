@@ -24,7 +24,7 @@
 
         <!-- Manager -->
         <template v-if="role === 'manager'">
-          <li class="nav-item"><NuxtLink to="/manager/approve/shop" class="nav-link">Duyệt shop</NuxtLink></li>
+          <li class="nav-item"><NuxtLink to="/manager/approve/shop" class="nav-link">Duyệt cửa hàng</NuxtLink></li>
           <li class="nav-item"><NuxtLink to="/manager/approve/product" class="nav-link">Duyệt sản phẩm</NuxtLink></li>
         </template>
 

@@ -33,7 +33,7 @@ const handleLogin = async () => {
   const success = await login(email.value, password.value);
   if (success) {
     if (process.client) {
-      localStorage.setItem('role', 'user');
+      // localStorage.setItem('role', 'user');
     }
 
     await navigateTo("/");

@@ -1,45 +1,54 @@
 <template>
-  <div class="container mt-5">
-    <h2 class="mb-4">{{ isEdit ? 'Cập nhật cửa hàng' : 'Tạo cửa hàng mới' }}</h2>
-    <form @submit.prevent="handleSubmit">
-      <div class="mb-3">
-        <label class="form-label">Tên cửa hàng</label>
-        <input v-model="shop.shopName" type="text" class="form-control" required />
-      </div>
+  <div class="container py-5" style="max-width: 700px">
+    <h2 class="fw-bold mb-4 text-center">
+      {{ isEdit ? 'Cập nhật cửa hàng' : 'Tạo cửa hàng mới' }}
+    </h2>
 
-      <div class="mb-3">
-        <label class="form-label">Địa chỉ</label>
-        <input v-model="shop.shopAddress" type="text" class="form-control" required />
+    <form @submit.prevent="handleSubmit" class="bg-light p-4 rounded shadow-sm border">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label">Tên cửa hàng</label>
+          <input v-model="shop.shopName" type="text" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Địa chỉ</label>
+          <input v-model="shop.shopAddress" type="text" class="form-control" required />
+        </div>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Mô tả</label>
-        <textarea v-model="shop.shopDescription" class="form-control" rows="3" />
+        <textarea v-model="shop.shopDescription" class="form-control" rows="3"
+          placeholder="Nhập mô tả về cửa hàng..." />
       </div>
 
       <div class="mb-3">
         <label class="form-label">Ảnh cửa hàng</label>
         <input type="file" class="form-control" @change="handleImageUpload" accept="image/*" />
-        <div v-if="previewUrl || shop.shopImage" class="mt-3">
-          <strong>Xem trước ảnh:</strong><br />
-          <img :src="previewUrl || shop.shopImage" alt="Preview" class="img-thumbnail" style="max-height: 200px;" />
+        <div v-if="previewUrl || shop.shopImage" class="mt-3 border rounded p-2 text-center bg-white">
+          <label class="form-label mb-2 fw-semibold">Xem trước ảnh:</label><br />
+          <img :src="previewUrl || shop.shopImage" alt="Preview" class="img-fluid"
+            style="max-height: 200px; object-fit: contain;" />
         </div>
       </div>
 
-      <div class="d-flex gap-2">
-        <button v-if="isEdit" type="submit" class="btn btn-warning">Cập nhật</button>
-        <button v-if="isEdit" type="button" @click="handleDelete" class="btn btn-danger">Xoá</button>
-        <button v-else type="submit" class="btn btn-primary">Tạo cửa hàng</button>
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <button v-if="isEdit" type="submit" class="btn btn-warning px-4">Cập nhật</button>
+        <button v-if="isEdit" type="button" @click="handleDelete" class="btn btn-outline-danger">
+          Xoá
+        </button>
+        <button v-else type="submit" class="btn btn-primary px-4">Tạo cửa hàng</button>
       </div>
     </form>
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
 const { $toast, $repositories }: any = useNuxtApp()
-const userId = localStorage.getItem('accountId')
+const userId = ref<string | null>(null)
 
 const isEdit = ref(false)
 const previewUrl = ref<string | null>(null)
@@ -55,8 +64,11 @@ const shop = ref({
 })
 
 onMounted(async () => {
+  if (process.client) {
+    userId.value = localStorage.getItem('accountId')
+  }
   try {
-    const result = await $repositories.shopRepository.getShopByUserId(userId)
+    const result = await $repositories.shopRepository.getShopByUserId(userId.value)
     if (result) {
       shop.value = {
         shopId: result.shopId,
@@ -106,7 +118,7 @@ const handleSubmit = async () => {
       $toast.success('Tạo cửa hàng thành công!')
     }
 
-    navigateTo('/shop')
+    navigateTo('/')
   } catch (err) {
     $toast.error(`${isEdit.value ? 'Cập nhật' : 'Tạo'} cửa hàng thất bại!`)
 
