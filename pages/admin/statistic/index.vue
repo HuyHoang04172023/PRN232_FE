@@ -47,6 +47,12 @@ const statisticCards = [
     icon: '📊',
     route: '/admin/statistic/product-statistics'
   },
+  {
+    title: 'Thống kê đơn hàng',
+    description: 'Xem các thông kê về đơn hàng trên website.',
+    icon: '📊',
+    route: '/admin/statistic/order-statistics'
+  },
 ]
 
 const navigateTo = (path) => {
