@@ -1,47 +1,63 @@
 <template>
-  <div class="container mt-5">
-    <h2 class="mb-4">Tạo sản phẩm mới</h2>
-    <form @submit.prevent="handleSubmit">
-      <div class="mb-3">
-        <label class="form-label">Tên sản phẩm</label>
-        <input v-model="product.productName" type="text" class="form-control" required />
+  <div class="container py-5" style="max-width: 800px">
+    <h2 class="text-center mb-4">Tạo sản phẩm mới</h2>
+
+    <form @submit.prevent="handleSubmit" class="bg-light p-4 rounded shadow-sm border">
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label">Tên sản phẩm</label>
+          <input v-model="product.productName" type="text" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Mô tả sản phẩm</label>
+          <textarea v-model="product.productDescription" class="form-control" rows="3" required />
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Mô tả sản phẩm</label>
-        <textarea v-model="product.productDescription" class="form-control" rows="3" />
-      </div>
-
-      <div class="mb-3">
+      <div class="mb-4">
         <label class="form-label">Ảnh sản phẩm</label>
         <input type="file" class="form-control" @change="handleImageUpload" accept="image/*" />
-        <div v-if="previewUrl" class="mt-3">
-          <strong>Xem trước ảnh:</strong><br />
-          <img :src="previewUrl" alt="Preview" class="img-thumbnail" style="max-height: 200px;" />
+        <div v-if="previewUrl" class="mt-3 border p-3 rounded text-center bg-white">
+          <label class="form-label mb-2 fw-semibold">Xem trước ảnh:</label><br />
+          <img :src="previewUrl" alt="Preview" class="img-fluid" style="max-height: 200px; object-fit: contain;" />
         </div>
       </div>
 
-      <div class="mb-3">
+      <div class="mb-4">
         <label class="form-label">Biến thể sản phẩm</label>
-        <div v-for="(variant, index) in product.productVariants" :key="index"
-          class="d-flex gap-2 mb-2 align-items-center">
-          <input v-model.number="variant.productVariantPrice" type="number" class="form-control" placeholder="Giá"
-            required />
-          <select v-model="variant.productSizeId" class="form-select" required>
-            <option disabled value="">Chọn size</option>
-            <option v-for="size in productSizes" :key="size.productSizeId" :value="size.productSizeId">
-              {{ size.productSizeName }}
-            </option>
-          </select>
-          <button type="button" class="btn btn-danger" @click="removeVariant(index)"
-            v-if="product.productVariants.length > 1">
-            🗑️
-          </button>
+
+        <div v-for="(variant, index) in product.productVariants" :key="index" class="row gx-2 align-items-center mb-2">
+          <div class="col-md-5">
+            <input v-model.number="variant.productVariantPrice" type="number" class="form-control" placeholder="Giá"
+              required />
+          </div>
+          <div class="col-md-5">
+            <select v-model="variant.productSizeId" class="form-select" required>
+              <option disabled value="">Chọn size</option>
+              <option v-for="size in productSizes" :key="size.productSizeId" :value="size.productSizeId">
+                {{ size.productSizeName }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-2 text-end">
+            <button type="button" class="btn btn-outline-danger btn-sm" @click="removeVariant(index)"
+              v-if="product.productVariants.length > 1">
+              Xoá
+            </button>
+          </div>
         </div>
-        <button type="button" class="btn btn-secondary mt-2" @click="addVariant">+ Thêm biến thể</button>
+
+        <button type="button" class="btn btn-outline-secondary mt-2" @click="addVariant">
+          + Thêm biến thể
+        </button>
       </div>
 
-      <button type="submit" class="btn btn-primary mt-3">Tạo sản phẩm</button>
+      <div class="text-end">
+        <button type="submit" class="btn btn-primary px-4">
+          Tạo sản phẩm
+        </button>
+      </div>
     </form>
   </div>
 </template>

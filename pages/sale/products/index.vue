@@ -62,10 +62,10 @@ const tabs = [
 ]
 
 const stats = computed(() => [
-    { label: 'Active', count: productActive.value.length || 0 },
-    { label: 'Pending', count: productPending.value.length || 0 },
-    { label: 'Soldout', count: productSoldout.value.length || 0 },
-    { label: 'Reject', count: productReject.value.length || 0 }
+    { label: 'Đang hoạt động', count: productActive.value.length || 0 },
+    { label: 'Chờ duyệt', count: productPending.value.length || 0 },
+    { label: 'Hết hàng', count: productSoldout.value.length || 0 },
+    { label: 'Từ chối', count: productReject.value.length || 0 }
 ])
 
 const filteredProducts = computed(() => {

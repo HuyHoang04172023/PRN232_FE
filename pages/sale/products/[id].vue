@@ -1,60 +1,75 @@
 <template>
-    <div class="container py-4" v-if="productData">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="mb-0">Chỉnh sửa sản phẩm</h2>
-            <button class="btn btn-outline-danger" @click="deleteProduct">
-                Xoá sản phẩm
-            </button>
+    <div class="container py-5" v-if="productData">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">Chỉnh sửa sản phẩm</h2>
+            <button class="btn btn-outline-danger" @click="deleteProduct">Xoá sản phẩm</button>
         </div>
 
-        <div class="mb-4">
-            <label class="form-label">Tên sản phẩm</label>
-            <input v-model="productData.productName" class="form-control" />
-
-            <label class="form-label mt-3">Mô tả</label>
-            <textarea v-model="productData.productDescription" class="form-control" rows="3"></textarea>
-
-            <label class="form-label mt-3">Ảnh sản phẩm</label>
-            <input v-model="productData.productImage" class="form-control" />
-            <input type="file" class="form-control" @change="handleImageUpload" accept="image/*" />
-            <div v-if="previewUrl" class="mt-2">
-                <img :src="previewUrl" alt="Preview" class="img-thumbnail" style="max-height: 200px;" />
+        <form @submit.prevent="updateProduct" class="bg-light p-4 rounded shadow-sm border">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Tên sản phẩm</label>
+                    <input v-model="productData.productName" class="form-control" required />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Mô tả</label>
+                    <textarea v-model="productData.productDescription" class="form-control" rows="3" required />
+                </div>
             </div>
-        </div>
 
-        <h4 class="mt-5">Các biến thể sản phẩm</h4>
-        <button class="btn btn-outline-success mb-3" @click="addProductVariant">
-            + Thêm biến thể sản phẩm
-        </button>
-        <div class="card p-3 mb-3" v-for="(variant, index) in productData.productVariants"
-            :key="variant.productVariantId">
-            <div class="row align-items-center">
-                <div class="col-md-5">
-                    <label class="form-label">Size</label>
-                    <select v-model="variant.productSizeId" class="form-select">
-                        <option v-for="size in productSizes" :key="size.productSizeId" :value="size.productSizeId">
-                            {{ size.productSizeName }}
-                        </option>
-                    </select>
+            <div class="mb-4">
+                <label class="form-label">Ảnh sản phẩm</label>
+                <input v-model="productData.productImage" class="form-control mb-2" placeholder="Link ảnh trực tiếp" />
+                <input type="file" class="form-control" @change="handleImageUpload" accept="image/*" />
+                <div v-if="previewUrl" class="mt-3 border p-2 text-center bg-white rounded">
+                    <label class="form-label fw-semibold">Xem trước ảnh:</label><br />
+                    <img :src="previewUrl" alt="Preview" class="img-fluid"
+                        style="max-height: 200px; object-fit: contain;" />
                 </div>
+            </div>
 
-                <div class="col-md-5">
-                    <label class="form-label">Giá</label>
-                    <input type="number" v-model.number="variant.productVariantPrice" class="form-control" />
-                </div>
-
-                <div class="col-md-2 d-flex align-items-end">
-                    <button class="btn btn-danger w-100" @click="removeProductVariant(index)">
-                        Xoá
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="mb-0">Các biến thể sản phẩm</h5>
+                    <button class="btn btn-outline-secondary btn-sm" type="button" @click="addProductVariant">
+                        + Thêm biến thể
                     </button>
                 </div>
+
+                <div class="card p-3 mb-3" v-for="(variant, index) in productData.productVariants"
+                    :key="variant.productVariantId ?? index">
+                    <div class="row align-items-end gx-3">
+                        <div class="col-md-5">
+                            <label class="form-label">Size</label>
+                            <select v-model="variant.productSizeId" class="form-select" required>
+                                <option disabled value="">-- Chọn size --</option>
+                                <option v-for="size in productSizes" :key="size.productSizeId"
+                                    :value="size.productSizeId">
+                                    {{ size.productSizeName }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-5">
+                            <label class="form-label">Giá</label>
+                            <input type="number" v-model.number="variant.productVariantPrice" class="form-control"
+                                required />
+                        </div>
+
+                        <div class="col-md-2">
+                            <button class="btn btn-outline-danger w-100 mt-2" type="button"
+                                @click="removeProductVariant(index)">
+                                Xoá
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-        </div>
-
-        <button class="btn btn-primary mt-3" @click="updateProduct">
-            Lưu thay đổi
-        </button>
+            <div class="text-center">
+                <button class="btn btn-primary px-4" type="submit">Lưu thay đổi</button>
+            </div>
+        </form>
     </div>
 
     <div v-else class="text-center py-5">
