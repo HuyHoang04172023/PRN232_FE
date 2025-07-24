@@ -3,7 +3,6 @@
     <h3 class="fw-bold mb-4 text-primary text-center">Xác nhận đơn hàng</h3>
 
     <div v-if="groupedItems.length">
-      <!-- Group theo cửa hàng -->
       <div v-for="(group, index) in groupedItems" :key="index" class="mb-5">
         <div class="bg-light border rounded p-3 mb-2">
           <h5 class="fw-bold text-dark mb-3">{{ group.shopName }}</h5>

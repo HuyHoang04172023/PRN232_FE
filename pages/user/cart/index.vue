@@ -1,27 +1,31 @@
 <template>
-    <div class="container mt-5">
-        <h3>🛒 Giỏ hàng của bạn</h3>
+    <div class="container py-5">
+        <h3 class="fw-bold mb-4 text-primary text-center">Giỏ hàng của bạn</h3>
 
         <div v-if="groupedCartItems.length">
-            <div v-for="(group, index) in groupedCartItems" :key="index" class="mb-4 border rounded p-3">
-                <h5>🛍️ {{ group.shopName }}</h5>
+            <div v-for="(group, index) in groupedCartItems" :key="index" class="mb-5 bg-light border rounded p-3">
+                <h5 class="fw-semibold mb-3">{{ group.shopName }}</h5>
+
                 <div v-for="item in group.items" :key="item.cartItemId"
-                    class="row align-items-center border-bottom py-2">
+                    class="row align-items-center border-bottom py-3 gx-3">
                     <div class="col-auto">
                         <input type="checkbox" v-model="selectedItems" :value="item.cartItemId"
                             class="form-check-input" />
                     </div>
 
                     <div class="col-auto">
-                        <img :src="item.productVariant.product.productImage" alt="Product Image" class="img-thumbnail"
-                            style="width: 80px; height: 80px; object-fit: cover;" />
+                        <img :src="item.productVariant.product.productImage" alt="Product Image" class="rounded"
+                            style="width: 80px; height: 80px; object-fit: cover" />
                     </div>
 
                     <div class="col">
-                        <h5 class="mb-1">{{ item.productVariant.product.productName }}</h5>
-                        <p class="mb-1 text-muted">Size: {{ item.productVariant.productSize.productSizeName }}</p>
-                        <p class="mb-1 text-success fw-bold">{{ formatPrice(item.productVariant.productVariantPrice) }}
-                        </p>
+                        <h6 class="mb-1">{{ item.productVariant.product.productName }}</h6>
+                        <div class="text-muted small">
+                            <div>Size: {{ item.productVariant.productSize.productSizeName }}</div>
+                            <div class="text-success fw-semibold">
+                                {{ formatPrice(item.productVariant.productVariantPrice) }}
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-auto d-flex align-items-center">
@@ -31,18 +35,16 @@
                     </div>
 
                     <div class="col-auto">
-                        <button class="btn btn-danger btn-sm" @click="removeItem(item)">Xóa</button>
+                        <button class="btn btn-outline-danger btn-sm" @click="removeItem(item)">Xóa</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div v-else class="text-muted mt-3">🪶 Giỏ hàng đang trống.</div>
+        <div v-else class="text-center text-muted py-5">Giỏ hàng của bạn đang trống.</div>
 
-        <div v-if="cart?.cartItems?.length" class="mt-4 text-end">
-            <button class="btn btn-success" @click="createOrder">
-                🧾 Tạo đơn hàng
-            </button>
+        <div v-if="cart?.cartItems?.length" class="text-end mt-4">
+            <button class="btn btn-success px-4" @click="createOrder">Tạo đơn hàng</button>
         </div>
     </div>
 </template>
