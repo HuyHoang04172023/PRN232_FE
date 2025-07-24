@@ -18,5 +18,18 @@ export const statisticalAdminRepository = ($api: any) => {
         async newShopsPerMonth(): Promise<any[]> {
             return $api.get(`${path}/shop/new-shops-per-month`).then((response: any) => response.data);
         },
+
+        async newUsersPerMonth(): Promise<any[]> {
+            return $api.get(`${path}/user/new-users-per-month`).then((response: any) => response.data);
+        },
+        async topUsersByOrders(): Promise<any[]> {
+            return $api.get(`${path}/user/top-users-by-orders`).then((response: any) => response.data);
+        },
+        async shopsByUser(): Promise<any[]> {
+            return $api.get(`${path}/user/shops-by-user`).then((response: any) => response.data);
+        },
+        async usersByRole(): Promise<any[]> {
+            return $api.get(`${path}/user/users-by-role`).then((response: any) => response.data);
+        },
     };
 };

@@ -35,12 +35,12 @@ const statisticCards = [
     icon: '📈',
     route: '/admin/statistic/shop-statistics'
   },
-  // {
-  //   title: 'Thống kê sản phẩm',
-  //   description: 'Xem các sản phẩm bán chạy hoặc được yêu thích nhất.',
-  //   icon: '📊',
-  //   route: '/sale/statistic/product-statistics'
-  // },
+  {
+    title: 'Thống kê người dùng',
+    description: 'Xem các thông kê về người dùng trên website.',
+    icon: '📊',
+    route: '/admin/statistic/user-statistics'
+  },
   // {
   //   title: 'Trạng thái đơn hàng',
   //   description: 'Phân tích số lượng đơn hàng theo trạng thái.',

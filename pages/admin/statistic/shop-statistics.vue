@@ -16,9 +16,9 @@
       <div class="col-12 col-md-6 mb-4">
         <ShopNewPerMonthChart />
       </div>
-      <div class="col-12 col-md-6 mb-4">
+      <!-- <div class="col-12 col-md-6 mb-4">
         <ShopRevenueChart />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
