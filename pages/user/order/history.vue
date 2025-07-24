@@ -5,7 +5,6 @@
             <p class="text-muted">Xem lại các đơn hàng bạn đã đặt</p>
         </div>
 
-        <!-- Tabs -->
         <ul class="nav nav-pills justify-content-center mb-4 gap-2">
             <li class="nav-item" v-for="status in statuses" :key="status.key">
                 <button class="nav-link px-4 py-2" :class="{ active: currentTab === status.key }"
@@ -15,12 +14,10 @@
             </li>
         </ul>
 
-        <!-- Empty state -->
         <div v-if="filteredOrders.length === 0" class="text-center text-muted py-4">
             Không có đơn hàng nào trong mục này.
         </div>
 
-        <!-- List orders -->
         <div v-else v-for="order in filteredOrders" :key="order.orderId" class="card mb-4 shadow-sm border-0"
             @click="goToOrderDetail(order.orderId)" style="cursor: pointer">
             <div class="card-header bg-light d-flex justify-content-between align-items-center border-0">
