@@ -1,14 +1,22 @@
 <template>
-    <div class="container py-4">
-        <h2 class="mb-4">Danh sách đơn hàng của cửa hàng</h2>
+    <div class="container py-5">
+        <h2 class="text-center mb-4">Danh sách đơn hàng của cửa hàng</h2>
 
-        <div v-if="orders.length === 0" class="text-muted">
-            Chưa có đơn hàng nào.
+        <ul class="nav nav-pills justify-content-center mb-4 gap-2">
+            <li class="nav-item" v-for="tab in tabs" :key="tab.key">
+                <button class="nav-link" :class="{ active: currentTab === tab.key }" @click="currentTab = tab.key">
+                    {{ tab.label }}
+                </button>
+            </li>
+        </ul>
+
+        <div v-if="filteredOrders.length === 0" class="text-muted text-center">
+            Không có đơn hàng nào trong mục này.
         </div>
 
-        <div v-else v-for="order in orders" :key="order.orderId" class="card mb-3 shadow-sm" style="cursor: pointer"
-            @click="goToOrderDetail(order.orderId)">
-            <div class="card-header d-flex justify-content-between align-items-center">
+        <div v-else v-for="order in filteredOrders" :key="order.orderId" class="card mb-4 shadow-sm border-0"
+            @click="goToOrderDetail(order.orderId)" style="cursor: pointer">
+            <div class="card-header d-flex justify-content-between align-items-center bg-light">
                 <strong>Đơn hàng #{{ order.orderId }}</strong>
                 <span :class="statusClass(order.status)">
                     {{ convertStatus(order.status) }}
@@ -27,23 +35,31 @@
                     </li>
                 </ul>
 
-                <div class="mt-3 text-end">
-                    <strong>Tổng tiền: {{ formatPrice(getOrderTotal(order)) }}đ</strong>
+                <div class="mt-3 text-end fw-semibold">
+                    Tổng tiền: <span class="text-success">{{ formatPrice(getOrderTotal(order)) }}đ</span>
                 </div>
             </div>
         </div>
     </div>
 </template>
-
 <script setup lang="ts">
+import { ref, onMounted, computed } from 'vue'
 import { useNuxtApp, useRouter } from 'nuxt/app'
-import { ref, onMounted } from 'vue'
 
 const { $toast, $repositories }: any = useNuxtApp()
 const router = useRouter()
 
 const shopId = ref<string | null>(null)
 const orders = ref<any[]>([])
+const currentTab = ref<string>('pending')
+
+const tabs = [
+    { key: 'pending', label: 'Chờ xác nhận' },
+    { key: 'doing', label: 'Đang chuẩn bị' },
+    { key: 'shipping', label: 'Đang giao hàng' },
+    { key: 'success', label: 'Hoàn thành' },
+    { key: 'cancel', label: 'Đã hủy' }
+]
 
 const fetchOrders = async (id: number) => {
     try {
@@ -53,6 +69,10 @@ const fetchOrders = async (id: number) => {
         $toast.error('Không thể tải danh sách đơn hàng.')
     }
 }
+
+const filteredOrders = computed(() => {
+    return orders.value.filter((order) => order.status === currentTab.value)
+})
 
 const goToOrderDetail = (orderId: number) => {
     router.push(`/sale/order/${orderId}`)
@@ -90,6 +110,8 @@ const convertStatus = (status: string) => {
             return 'Hoàn thành'
         case 'cancel':
             return 'Đã hủy'
+        case 'shipping':
+            return 'Đang giao hàng'
         default:
             return 'Không xác định'
     }
@@ -105,6 +127,8 @@ const statusClass = (status: string) => {
             return 'badge bg-success'
         case 'cancel':
             return 'badge bg-danger'
+        case 'shipping':
+            return 'badge bg-primary'
         default:
             return 'badge bg-secondary'
     }

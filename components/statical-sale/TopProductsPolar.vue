@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-4 border rounded shadow">
     <h2 class="font-bold mb-2">🌟 Top sản phẩm bán chạy</h2>
     <canvas ref="canvas" />
   </div>

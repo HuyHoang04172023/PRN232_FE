@@ -1,7 +1,9 @@
 <template>
   <div>
-    <h2 class="font-bold mb-2">❤️ Tỉ lệ lượt thích sản phẩm</h2>
-    <canvas ref="canvas" />
+    <div class="p-4 border rounded shadow">
+      <h2 class="font-bold mb-2">❤️ Tỉ lệ lượt thích sản phẩm</h2>
+      <canvas ref="canvas" />
+    </div>
   </div>
 </template>
 

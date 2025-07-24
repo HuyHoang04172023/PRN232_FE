@@ -1,52 +1,67 @@
 <template>
-    <div class="container py-4" v-if="order">
-        <h2 class="mb-4">Chi tiết đơn hàng #{{ order.orderId }}</h2>
+    <div class="container py-5" v-if="order">
+        <h2 class="mb-4 text-center">Chi tiết đơn hàng #{{ order.orderId }}</h2>
 
-        <div class="mb-3">
-            <p><strong>Ngày đặt:</strong> {{ formatDate(order.createdAt) }}</p>
-            <p><strong>Khách hàng:</strong> {{ order.customer.userName }} ({{ order.customer.email }})</p>
-            <p><strong>Địa chỉ giao hàng:</strong> {{ order.shippingAddress }}</p>
-            <p><strong>SĐT:</strong> {{ order.phoneNumber }}</p>
-            <p><strong>Ghi chú:</strong> {{ order.orderNote }}</p>
-            <p><strong>Trạng thái hiện tại:</strong>
-                <span :class="statusClass(order.status)">
-                    {{ convertStatus(order.status) }}
-                </span>
-            </p>
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <div class="row gy-3">
+                    <div class="col-md-6">
+                        <p><strong>Ngày đặt:</strong> {{ formatDate(order.createdAt) }}</p>
+                        <p><strong>Khách hàng:</strong> {{ order.customer.userName }} ({{ order.customer.email }})</p>
+                        <p><strong>SĐT:</strong> {{ order.phoneNumber }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Địa chỉ giao hàng:</strong> {{ order.shippingAddress }}</p>
+                        <p><strong>Ghi chú:</strong> {{ order.orderNote || 'Không có' }}</p>
+                        <p><strong>Trạng thái:</strong>
+                            <span :class="statusClass(order.status)">
+                                {{ convertStatus(order.status) }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="card shadow-sm mb-3">
-            <div class="card-header"><strong>Sản phẩm</strong></div>
+        <div class="card shadow-sm mb-4 border-0">
+            <div class="card-header bg-light"><strong>Sản phẩm</strong></div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex align-items-start gap-3" v-for="item in order.items"
+                <li class="list-group-item d-flex gap-3 align-items-start" v-for="item in order.items"
                     :key="item.productVariantId">
                     <img :src="item.product.productImage" alt="Ảnh sản phẩm"
                         style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px" />
                     <div class="flex-grow-1">
-                        <div><strong>{{ item.product.productName }}</strong> (Size: {{ item.product.productSize }})
-                        </div>
-                        <div class="text-muted">Số lượng: {{ item.quantity }}</div>
-                        <div class="text-muted">Đơn giá: {{ formatPrice(item.unitPrice) }}đ</div>
+                        <strong>{{ item.product.productName }}</strong>
+                        <div class="text-muted small">Size: {{ item.product.productSize }}</div>
+                        <div class="text-muted small">Số lượng: {{ item.quantity }}</div>
+                        <div class="text-muted small">Đơn giá: {{ formatPrice(item.unitPrice) }}đ</div>
                     </div>
-                    <div class="fw-bold text-end" style="min-width: 100px">
+                    <div class="text-end fw-bold text-nowrap" style="min-width: 100px">
                         {{ formatPrice(item.total) }}đ
                     </div>
                 </li>
             </ul>
         </div>
 
-        <div class="text-end mb-4">
-            <strong>Tổng tiền: {{ formatPrice(order.totalAmount) }}đ</strong>
+        <div class="text-end mb-4 fs-5">
+            <strong>Tổng tiền: <span class="text-success">{{ formatPrice(order.totalAmount) }}đ</span></strong>
         </div>
 
-        <div v-if="order.status !== 'cancel' && order.status !== 'success'" class="card p-3 shadow-sm mb-4">
-            <label for="statusSelect" class="form-label"><strong>Cập nhật trạng thái đơn hàng:</strong></label>
-            <select id="statusSelect" class="form-select" v-model="selectedStatus">
-                <option v-for="status in statusOptions" :key="status.statusOrderId" :value="status.statusOrderName">
-                    {{ convertStatus(status.statusOrderName) }}
-                </option>
-            </select>
-            <button class="btn btn-primary mt-3" @click="updateStatus">Cập nhật</button>
+        <div v-if="order.status !== 'cancel' && order.status !== 'success'" class="card p-4 shadow-sm border-0 mb-4">
+            <label for="statusSelect" class="form-label fw-semibold">Cập nhật trạng thái đơn hàng:</label>
+            <div class="row g-2 align-items-end">
+                <div class="col-md-6">
+                    <select id="statusSelect" class="form-select" v-model="selectedStatus">
+                        <option v-for="status in statusOptions" :key="status.statusOrderId"
+                            :value="status.statusOrderName">
+                            {{ convertStatus(status.statusOrderName) }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary w-100" @click="updateStatus">Cập nhật</button>
+                </div>
+            </div>
         </div>
 
         <div v-else class="alert alert-secondary text-center mt-4">
@@ -54,7 +69,10 @@
                 Đơn hàng đã {{ order.status === 'cancel' ? 'bị hủy' : 'hoàn thành' }} và không thể cập nhật trạng thái.
             </strong>
         </div>
+    </div>
 
+    <div v-else class="text-center py-5 text-muted">
+        <p>Đang tải thông tin đơn hàng...</p>
     </div>
 </template>
 

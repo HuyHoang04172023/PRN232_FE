@@ -1,7 +1,9 @@
 <template>
   <div>
-    <h2 class="font-bold mb-2">📊 Doanh thu theo tháng</h2>
-    <canvas ref="canvas" />
+    <div class="p-4 border rounded shadow">
+      <h2 class="font-bold mb-2">📊 Doanh thu theo tháng</h2>
+      <canvas ref="canvas" />
+    </div>
   </div>
 </template>
 
@@ -18,7 +20,7 @@ const canvas = ref()
 onMounted(async () => {
   try {
     if (process.client) {
-        shopId.value = localStorage.getItem('shopId');
+      shopId.value = localStorage.getItem('shopId');
     }
     const response = await $repositories.statisticalSaleRepository.revenueByMonth(shopId.value)
 

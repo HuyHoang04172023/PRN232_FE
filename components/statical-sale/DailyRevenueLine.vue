@@ -1,20 +1,22 @@
 <template>
   <div>
-    <h2 class="font-bold mb-4">
-      📈 Doanh thu theo ngày ({{ selectedMonth }}/{{ selectedYear }})
-    </h2>
+    <div class="p-4 border rounded shadow">
+      <h2 class="font-bold mb-4">
+        📈 Doanh thu theo ngày ({{ selectedMonth }}/{{ selectedYear }})
+      </h2>
 
-    <div class="d-flex align-items-center gap-3 mb-4">
-      <select v-model="selectedMonth" class="form-select w-auto">
-        <option v-for="m in 12" :key="m" :value="m">Tháng {{ m }}</option>
-      </select>
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <select v-model="selectedMonth" class="form-select w-auto">
+          <option v-for="m in 12" :key="m" :value="m">Tháng {{ m }}</option>
+        </select>
 
-      <select v-model="selectedYear" class="form-select w-auto">
-        <option v-for="y in [2023, 2024, 2025]" :key="y" :value="y">Năm {{ y }}</option>
-      </select>
+        <select v-model="selectedYear" class="form-select w-auto">
+          <option v-for="y in [2023, 2024, 2025]" :key="y" :value="y">Năm {{ y }}</option>
+        </select>
+      </div>
+
+      <canvas ref="canvas" />
     </div>
-
-    <canvas ref="canvas" />
   </div>
 </template>
 
