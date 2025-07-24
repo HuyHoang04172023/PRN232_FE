@@ -5,6 +5,7 @@ import { configDataRepository } from "~/repositories/config-data";
 import { cartRepository } from "~/repositories/cart";
 import { orderRepository } from "~/repositories/order";
 import { statisticalSaleRepository } from "~/repositories/statistis-sale";
+import { statisticalAdminRepository } from "~/repositories/statistis-admin";
 
 export default defineNuxtPlugin({
     setup(nuxtApp) {
@@ -18,6 +19,7 @@ export default defineNuxtPlugin({
             cartRepository: cartRepository($api),
             orderRepository: orderRepository($api),
             statisticalSaleRepository: statisticalSaleRepository($api),
+            statisticalAdminRepository: statisticalAdminRepository($api)
         };
 
         return {
