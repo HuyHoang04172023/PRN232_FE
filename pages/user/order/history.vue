@@ -1,30 +1,52 @@
 <template>
-    <div class="container py-4">
-        <h2 class="mb-4">Lịch sử đơn hàng</h2>
+    <div class="order-history container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-primary">Lịch sử đơn hàng</h2>
+            <p class="text-muted">Xem lại các đơn hàng bạn đã đặt</p>
+        </div>
 
-        <div v-if="orders.length === 0" class="text-muted">Bạn chưa có đơn hàng nào.</div>
+        <!-- Tabs -->
+        <ul class="nav nav-pills justify-content-center mb-4 gap-2">
+            <li class="nav-item" v-for="status in statuses" :key="status.key">
+                <button class="nav-link px-4 py-2" :class="{ active: currentTab === status.key }"
+                    @click="currentTab = status.key">
+                    {{ status.label }}
+                </button>
+            </li>
+        </ul>
 
-        <div v-else v-for="order in orders" :key="order.orderId" class="card mb-4 shadow-sm"
+        <!-- Empty state -->
+        <div v-if="filteredOrders.length === 0" class="text-center text-muted py-4">
+            Không có đơn hàng nào trong mục này.
+        </div>
+
+        <!-- List orders -->
+        <div v-else v-for="order in filteredOrders" :key="order.orderId" class="card mb-4 shadow-sm border-0"
             @click="goToOrderDetail(order.orderId)" style="cursor: pointer">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <div><strong>Đơn hàng #{{ order.orderId }}</strong></div>
+            <div class="card-header bg-light d-flex justify-content-between align-items-center border-0">
+                <strong>Đơn hàng #{{ order.orderId }}</strong>
                 <span :class="statusClass(order.status)">{{ convertStatus(order.status) }}</span>
             </div>
+
             <div class="card-body">
                 <p><strong>Ngày đặt:</strong> {{ formatDate(order.createdAt) }}</p>
                 <p><strong>Cửa hàng:</strong> {{ order.shop.shopName }}</p>
                 <p><strong>Địa chỉ giao:</strong> {{ order.shippingAddress }}</p>
 
-                <ul class="list-group list-group-flush mt-3">
+                <ul class="list-group list-group-flush mt-3 rounded">
                     <li class="list-group-item d-flex justify-content-between align-items-center"
                         v-for="item in order.items" :key="item.productVariantId">
-                        {{ item.productName }} (x{{ item.orderItemQuantity }})
+                        <span>
+                            {{ item.productName }}
+                            <span class="badge bg-secondary ms-2">x{{ item.orderItemQuantity }}</span>
+                        </span>
                         <span>{{ formatPrice(item.orderItemPrice) }}đ</span>
                     </li>
                 </ul>
 
-                <div class="mt-3 text-end">
-                    <strong>Tổng tiền: {{ formatPrice(getOrderTotal(order)) }}đ</strong>
+
+                <div class="mt-3 text-end fw-bold">
+                    Tổng tiền: <span class="text-success">{{ formatPrice(getOrderTotal(order)) }}đ</span>
                 </div>
             </div>
         </div>
@@ -32,14 +54,22 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, computed } from 'vue'
 import { useNuxtApp, useRouter } from 'nuxt/app'
-import { ref, onMounted } from 'vue'
 
 const { $repositories } = useNuxtApp()
 const router = useRouter()
 
 const orders = ref<any[]>([])
 const userId = ref<string | null>(null)
+const currentTab = ref<string>('pending')
+
+const statuses = [
+    { key: 'pending', label: 'Chờ xác nhận' },
+    { key: 'doing', label: 'Đang chuẩn bị' },
+    { key: 'success', label: 'Hoàn thành' },
+    { key: 'cancel', label: 'Đã hủy' }
+]
 
 const fetchOrders = async (id: number) => {
     try {
@@ -48,6 +78,10 @@ const fetchOrders = async (id: number) => {
         console.error(err)
     }
 }
+
+const filteredOrders = computed(() => {
+    return orders.value.filter(order => order.status === currentTab.value)
+})
 
 const goToOrderDetail = (orderId: number) => {
     router.push(`/user/order/${orderId}`)
@@ -117,9 +151,22 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.order-history {
+    max-width: 900px;
+}
+
+.nav-pills .nav-link {
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #0d6efd;
+}
+
 .card:hover {
-    transform: scale(1.01);
-    transition: 0.2s ease-in-out;
-    border: 1px solid #0d6efd;
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
 }
 </style>
