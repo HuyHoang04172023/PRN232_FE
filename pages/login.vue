@@ -1,8 +1,7 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
-    <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px;">
+  <div class="position-absolute top-50 start-50 translate-middle w-100" style="max-width: 400px;">
+    <div class="card shadow-sm p-4 bg-white border-0">
       <div class="text-center mb-4">
-        <!-- <img src="/login-icon.png" alt="Login" class="mb-3" style="width: 60px;" /> -->
         <h4 class="fw-bold text-primary">Đăng nhập</h4>
         <p class="text-muted small">Vui lòng nhập thông tin tài khoản</p>
       </div>
@@ -34,11 +33,11 @@ const handleLogin = async () => {
   const success = await login(email.value, password.value);
   if (success) {
     if (process.client) {
-      localStorage.setItem('role', 'user')
+      localStorage.setItem('role', 'user');
     }
 
-    await navigateTo("/")
-    location.reload()
+    await navigateTo("/");
+    location.reload();
   } else {
     error.value = "Sai email hoặc mật khẩu";
   }
