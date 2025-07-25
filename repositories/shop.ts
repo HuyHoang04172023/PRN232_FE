@@ -14,6 +14,9 @@ export const shopRepository = ($api: any) => {
         async getShopByUserId(userId: number): Promise<any> {
             return $api.get(`${path}/${userId}`).then((response: any) => response.data)
         },
+        async getShopInfoByShopId(shopId: number): Promise<any> {
+            return $api.get(`${path}/shop-info/${shopId}`).then((response: any) => response.data)
+        },
         async updateShopByShopId(shopId: number, data: any): Promise<any> {
             return $api.put(`${path}/${shopId}`, data).then((response: any) => response.data);
         },
