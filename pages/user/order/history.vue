@@ -18,7 +18,7 @@
             Không có đơn hàng nào trong mục này.
         </div>
 
-        <div v-else v-for="order in filteredOrders" :key="order.orderId" class="card mb-4 shadow-sm border-0"
+        <div v-else v-for="order in filteredOrders" :key="order.orderId" class="card mb-4 shadow-sm"
             @click="goToOrderDetail(order.orderId)" style="cursor: pointer">
             <div class="card-header bg-light d-flex justify-content-between align-items-center border-0">
                 <strong>Đơn hàng #{{ order.orderId }}</strong>
@@ -161,9 +161,27 @@ onMounted(() => {
     background-color: #0d6efd;
 }
 
-.card:hover {
-    transform: translateY(-2px);
+.card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
     transition: all 0.2s ease-in-out;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  font-weight: 500;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.list-group-item {
+  background-color: #fff;
+  border: none;
+  border-top: 1px solid #f1f1f1;
 }
 </style>
