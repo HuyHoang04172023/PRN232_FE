@@ -24,5 +24,8 @@ export const productRepository = ($api: any) => {
         async getProductsByShopId(shopId: number): Promise<any[]> {
             return $api.get(`${path}/shop/${shopId}`).then((response: any) => response.data);
         },
+        async getProductsByStatusNameAndShopId(statusName: string, shopId: number): Promise<any[]> {
+            return $api.get(`${path}/status/${statusName}/shop/${shopId}`).then((response: any) => response.data);
+        },
     };
 };

@@ -51,8 +51,7 @@
                 <SwiperSlide v-for="p in suggestedProducts" :key="p.productId">
                     <div class="card p-2 shadow-sm h-100" style="cursor: pointer; width: 100%;"
                         @click="goToProduct(p.productId)">
-                        <img :src="p.productImage" class="card-img-top rounded mb-2"
-                            style="height: 120px; object-fit: cover;" />
+                        <img :src="p.productImage" class="suggested-product-img card-img-top rounded mb-2" />
                         <div>
                             <h6 class="fw-bold mb-1">{{ p.productName }}</h6>
                             <p class="product-description small mb-1">{{ p.productDescription }}</p>
@@ -111,7 +110,9 @@ const fetchProductAndSizes = async () => {
 }
 
 const fetchSuggestedProducts = async () => {
-    const list = await $repositories.productRepository.getProductsByShopId(16)
+    const data = await $repositories.shopRepository.getShopIdByProductId(productId)
+
+    const list = await $repositories.productRepository.getProductsByShopId(data.shopId)
     suggestedProducts.value = list
         .filter((p: any) => p.productId !== productId)
         .slice(0, 5)
@@ -180,5 +181,28 @@ onMounted(() => {
     text-overflow: ellipsis;
     color: #6c757d;
     font-size: 0.95rem;
+}
+
+.main-product-img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border: 1px solid #dee2e6;
+}
+
+.suggested-product-img {
+  width: 100%;
+  height: 350px; /* tăng từ 120px lên để ảnh cao hơn */
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+}
+
+/* Đảm bảo card gợi ý cùng chiều cao */
+.swiper-slide .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 </style>

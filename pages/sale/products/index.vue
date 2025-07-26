@@ -47,6 +47,8 @@ import { useNuxtApp, useRouter } from 'nuxt/app'
 const { $repositories }: any = useNuxtApp()
 const router = useRouter()
 
+const shopId = ref<string | null>(null)
+
 const productActive = ref<any[]>([])
 const productPending = ref<any[]>([])
 const productSoldout = ref<any[]>([])
@@ -86,13 +88,21 @@ const goToProductDetail = (productId: number) => {
 }
 
 const fetchProducts = async () => {
-    productActive.value = await $repositories.productRepository.getProductsByStatusName("active")
-    productPending.value = await $repositories.productRepository.getProductsByStatusName("pending")
-    productSoldout.value = await $repositories.productRepository.getProductsByStatusName("soldout")
-    productReject.value = await $repositories.productRepository.getProductsByStatusName("reject")
+    productActive.value = await $repositories.productRepository.getProductsByStatusNameAndShopId("active", shopId.value)
+    productPending.value = await $repositories.productRepository.getProductsByStatusNameAndShopId("pending", shopId.value)
+    productSoldout.value = await $repositories.productRepository.getProductsByStatusNameAndShopId("soldout", shopId.value)
+    productReject.value = await $repositories.productRepository.getProductsByStatusNameAndShopId("reject", shopId.value)
 }
 
-onMounted(fetchProducts)
+onMounted(async () => {
+  if (process.client) {
+    shopId.value = localStorage.getItem('shopId')
+  }
+  try {
+    fetchProducts()
+  } catch (err) {
+  }
+})
 </script>
 <style scoped>
 .card:hover {

@@ -33,8 +33,7 @@
                 <div class="border rounded p-3 h-100 d-flex flex-column justify-content-between"
                     @click="goToProduct(product.productId)" style="cursor: pointer;">
                     <div class="d-flex">
-                        <img :src="product.productImage" alt="Product" class="me-3 rounded"
-                            style="width: 80px; height: 80px; object-fit: cover;" />
+                        <img :src="product.productImage" alt="Product" class="me-3 rounded product-image" />
                         <div>
                             <h6 class="fw-bold">{{ product.productName }}</h6>
                             <p class="product-description">
@@ -99,4 +98,13 @@ onMounted(fetchData)
     font-size: 0.9rem;
     color: #6c757d;
 }
+
+.product-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #dee2e6;
+}
+
 </style>
