@@ -24,6 +24,10 @@
   </div>
 </template>
 <script setup>
+definePageMeta({
+  layout: 'admin'
+})
+
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

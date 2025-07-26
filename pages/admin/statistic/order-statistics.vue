@@ -25,6 +25,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: 'admin'
+})
+
 import OrdersPerMonthChart from '~/components/statical-admin/order/OrdersPerMonthChart.vue'
 import RevenuePerMonthChart from '~/components/statical-admin/order/RevenuePerMonthChart.vue'
 import OrdersByStatusChart from '~/components/statical-admin/order/OrdersByStatusChart.vue'

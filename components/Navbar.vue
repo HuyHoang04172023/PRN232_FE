@@ -11,8 +11,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <!-- Admin -->
         <template v-if="role === 'admin'">
-          <li class="nav-item"><NuxtLink to="/admin/statistic" class="nav-link">Thống kê</NuxtLink></li>
-          <li class="nav-item"><NuxtLink to="/admin/users" class="nav-link">Người dùng</NuxtLink></li>
+          <li class="nav-item"><NuxtLink to="/admin/statistic/shop-statistics" class="nav-link">Thống kê</NuxtLink></li>
         </template>
 
         <!-- Sale -->
@@ -38,7 +37,6 @@
         <!-- Guest -->
         <template v-if="!isAuthenticated">
           <li class="nav-item"><NuxtLink to="/login" class="nav-link">Đăng nhập</NuxtLink></li>
-          <li class="nav-item"><NuxtLink to="/register" class="nav-link">Đăng ký</NuxtLink></li>
         </template>
       </ul>
 

@@ -18,6 +18,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: 'admin'
+})
+
 import UserNewPerMonthChart from '~/components/statical-admin/user/UserNewPerMonthChart.vue'
 import TopUsersByOrdersChart from '~/components/statical-admin/user/TopUsersByOrdersChart.vue'
 import ShopsByUserChart from '~/components/statical-admin/user/ShopsByUserChart.vue'

@@ -28,7 +28,7 @@
                 <div class="col-md-4 mb-4" v-for="product in filteredProducts" :key="product.productId">
                     <div class="card h-100 shadow-sm" @click="goToProductDetail(product.productId)"
                         style="cursor: pointer">
-                        <img :src="product.productImage" class="card-img-top" alt="..." />
+                        <img :src="product.productImage" class="product-image-top" alt="Product Image" />
                         <div class="card-body">
                             <h5 class="card-title">{{ product.productName }}</h5>
                             <p class="card-text">{{ product.productDescription }}</p>
@@ -109,5 +109,12 @@ onMounted(async () => {
     transform: scale(1.02);
     transition: 0.2s;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+}
+
+.product-image-top {
+  width: 100%;
+  height: 450px; /* hoặc 220px nếu muốn cao hơn */
+  object-fit: cover;
+  border-bottom: 1px solid #e9ecef;
 }
 </style>

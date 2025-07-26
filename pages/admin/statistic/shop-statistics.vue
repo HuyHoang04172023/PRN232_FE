@@ -24,6 +24,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: 'admin'
+})
+
 import ShopStatusChart from '~/components/statical-admin/shop/ShopStatusChart.vue'
 import ShopRevenueChart from '~/components/statical-admin/shop/ShopRevenueChart.vue'
 import ShopOrderCountChart from '~/components/statical-admin/shop/ShopOrderCountChart.vue'
